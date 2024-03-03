@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Simple Calculator</title>
+  <style>
+    * {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    position: relative;
+    }
+    :root{
+      --background-light: #fff;
+      --background-light-bg: #f7ffff;
+      --text-light: #2e2e2e;
+      --background-dark: #111111;
+      --background-dark-bg: #181818;
+      --text-dark: #626262;
+    }
+    .main {
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--background-light);
+    transition: background-color .4s;
+    }
+    .result {
+    background-color: var(--background-light);
+    height: 45vh;
+    transition: background-color .4s;
+    }
+    #result {
+    height: 12vh;
+    width: 80vw;
+    background-color: transparent;
+    border: none;
+    text-align: right;
+    font-size: 2rem;
+    color: #38D6D5;
+    top: 30vh;
+    left: 14vw;
+    overflow-x: auto;
+    overflow-y: auto;
+    }
+    .calculateButtons{
+    height: 55vh;
+    width: 100vw;
+    background-color: var(--background-light-bg);
+    border-radius: 15px 15px 0px 0px;
+    display: flex;
+    transition: background-color .4s;
+    }
+    .values {
+    height: 55vh;
+    max-width: 80vw;
+    background-color: transparent;
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    }
+    .buttons {
+    height: 55px;
+    width: 15vw;
+    margin: 5px 5px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: #38D6D5;
+    font-size: 1.6rem;
+    z-index: 2;
+    }
+    .backspaceIcon{
+      position: absolute;
+      height: 35px;
+      width: 12vw;
+      color: #38D6D5;
+      z-index: 1;
+    }
+    .num{
+    color: var(--text-light);
+    }
+    .advanceButtons{
+    height: 55vh;
+    width: 20vw;
+    padding: 18px 0px;
+    font-size: .5rem;
+    overflow: scroll;
+    }
+    .nav{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100vw;
+    }
+    .themeButton{
+      height: 60px;
+      width: 60px;
+      outline: none;
+      border: none;
+      position: fixed;
+      left: 80%;
+      display: flex;
+      background-color: var(--background-light);
+      align-items: center;
+      justify-content: center;
+      transition: background-color .4s;
+      z-index: 5;
+    }
+    .center{
+      height: 45px;
+      width: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .CircleA{
+      height: 30px;
+      width: 30px;
+      background-color: transparent;
+      border-radius: 50%;
+      box-shadow: 5px 5px 0px 0px #2f2f2f;
+      position: absolute;
+      transition: all 1s ease;
+      z-index: 2;
+    }
+    .rays{
+      height: 0px;
+      width: 0px;
+      background-color: transparent;
+      border-radius: 50%;
+      transition: all .3s;
+      transition-delay: .2s;
+      z-index: -1;
+    }
+    .rays.active{
+      height: 40px;
+      width: 40px;
+      border: 4px dotted #00e0c8;
+      transform: rotate(180deg);
+      z-index: 2;
+    }
+    .CircleA.active{
+      height: 25px;
+      width: 25px;
+      transform: rotate(360deg);
+      background-color: #00e0c8;
+      box-shadow: 0px 0px 0px 0px #00e0c8;
+    }
+    .parentButton{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .parentButton .fade{
+      height: 0px;
+      width: 0px;
+      position: absolute;
+      border-radius: 50%;
+      background-color: #81f5e9;
+    }
+    .parentButton.active .fade{
+      animation: fade .25s linear;
+    }
+    @media (min-width: 768px){
+        .buttons{
+          height: 120px;
+          width: 15vw;
+          font-size: 4rem;
+        }
+        .result{
+          height: 35vh;
+        }
+        #result{
+          top: 23vh;
+          font-size: 4.5rem;
+          overflow: auto;
+        }
+        .calculateButtons{
+          height: 65vh;
+        }
+        .advanceButtons{
+          height: 65vh;
+        }
+      .themeButton{
+        height: 80px;
+        width: 80px;
+        left: 88%;
+      }
+      .center{
+        height: 65px;
+        width: 65px;
+      }
+      .CircleA{
+        height: 50px;
+        width: 50px;
+        box-shadow: 10px 10px 0px 0px #2f2f2f;
+      }
+      .rays.active{
+        height: 60px;
+        width: 60px;
+        border: 5px dotted #00e0c8;
+      }
+      .CircleA.active{
+        height: 40px;
+        width: 40px;
+      }
+    }
+    @media (min-width: 993px) {
+       .buttons{
+        height: 120px;
+        width: 15vw;
+        font-size: 4rem;
+      }
+      .result{
+        height: 35vh;
+      }
+      #result{
+        top: 23vh;
+        font-size: 4.5rem;
+      }
+      .calculateButtons{
+        height: 65vh;
+      }
+      .advanceButtons{
+        height: 65vh;
+      }
+    .themeButton{
+      height: 80px;
+      width: 80px;
+      left: 88%;
+    }
+    .center{
+      height: 65px;
+      width: 65px;
+    }
+    .CircleA{
+      height: 50px;
+      width: 50px;
+      box-shadow: 10px 10px 0px 0px #2f2f2f;
+    }
+    .rays.active{
+      height: 60px;
+      width: 60px;
+      border: 5px dotted #00e0c8;
+    }
+    .CircleA.active{
+      height: 40px;
+      width: 40px;
+    }
+    }
+    @keyframes fade{
+    0%{
+    height: 150%;
+    width: 150%;
+    opacity: .3;
+    }
+    100%{
+    height: 200%;
+    width: 200%;
+    opacity: .3;
+    }
+    }
+  </style>
+</head>
+<body>
+  <form>
+    <div class="main">
+      <div class="nav">
+        <div class="themeButton">
+          <div class="center">
+            <div class="CircleA"></div>
+            <div class="rays"></div>
+          </div>
+        </div>
+      </div>
+      <div class="result">
+        <input type="text" id="result" disabled>
+      </div>
+      <div class="calculateButtons">
+        <div class="values">
+          <div class="parentButton">
+            <input type="button" value="C" class="buttons" onclick="clearResult()">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="%" class="buttons" onclick="calculatePercentage()">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="÷" class="buttons" onclick="appendToResult('/')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value=" " class="buttons" onclick="backspace()"><svg class="backspaceIcon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" height="1.5em" width="1.5em"><path fill="currentColor" d="M21.35 30.6q.45.45 1.075.45t1.075-.45l4.5-4.5 4.55 4.55q.45.45 1.05.45.6 0 1.05-.45.45-.45.45-1.075t-.45-1.075L30.1 24l4.5-4.5q.45-.45.45-1.05 0-.6-.45-1.05-.45-.45-1.075-.45t-1.075.45L28 21.9l-4.55-4.55q-.45-.45-1.05-.425-.6.025-1.05.425-.45.4-.45 1.05t.45 1.1L25.9 24l-4.55 4.5q-.4.45-.4 1.075t.4 1.025ZM18 38q-1.1 0-2-.575-.9-.575-1.55-1.475L7.2 25.75q-.55-.75-.55-1.725 0-.975.55-1.775l7.25-10.2q.65-.9 1.55-1.475.9-.575 2-.575h21q1.25 0 2.125.875T42 13v22q0 1.25-.875 2.125T39 38ZM9.75 24l7.7 11H39V13H17.45ZM39 24V13v22Z"/></svg></input>
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="7" class="buttons num" onclick="appendToResult('7')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="8" class="buttons num" onclick="appendToResult('8')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="9" class="buttons num" onclick="appendToResult('9')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="×" class="buttons" onclick="appendToResult('*')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="4" class="buttons num" onclick="appendToResult('4')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="5" class="buttons num" onclick="appendToResult('5')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="6" class="buttons num" onclick="appendToResult('6')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="-" class="buttons" onclick="appendToResult('-')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="1" class="buttons num" onclick="appendToResult('1')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="2" class="buttons num" onclick="appendToResult('2')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="3" class="buttons num" onclick="appendToResult('3')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="+" class="buttons" onclick="appendToResult('+')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="00" class="buttons num" onclick="appendToResult('00')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="0" class="buttons num" onclick="appendToResult('0')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="•" class="buttons" onclick="appendToResult('.')">
+            <div class="fade"></div>
+          </div>
+          <div class="parentButton">
+            <input type="button" value="=" class="buttons" onclick="calculate()">
+            <div class="fade"></div>
+          </div>
+        </div>
+        <div class="advanceButtons">
+          <input type="button" value="π" class="buttons" onclick="appendToResult('π')">
+          <input type="button" value="√" class="buttons" onclick="appendToResult('√')">
+          <input type="button" value="e" class="buttons" onclick="appendToResult('e')">
+          <input type="button" value="^" class="buttons" onclick="appendToResult('^')">
+          <input type="button" value="sin(" class="buttons" onclick="appendToResult('sin(')">
+          <input type="button" value="inv" class="buttons" onclick="appendToResult('inv(')">
+          <input type="button" value="cos(" class="buttons" onclick="appendToResult('cos(')">
+          <input type="button" value="tan(" class="buttons" onclick="appendToResult('tan(')">
+          <input type="button" value="ln(" class="buttons" onclick="appendToResult('ln(')">
+          <input type="button" value="log(" class="buttons" onclick="appendToResult('log(')">
+        </div>
+      </div>
+    </div>
+  </form>
+  <script>
+  
+function appendToResult(value) {
+    if (value === "+" || value === "-" || value === "*" || value === "/" || value === "^") {
+        if (lastClickedIsOperator) {
+            backspace();
+        }
+        lastClickedIsOperator = true;
+    } else {
+        lastClickedIsOperator = false;
+    }
+
+    if (value === 'e' || value === 'π') {
+        if (lastClickedIsOperator || resultIsDisplayed) {
+            document.getElementById('result').value += '*';
+        }
+        document.getElementById('result').value += value;
+        lastClickedIsOperator = false;
+        resultIsDisplayed = false;
+    } else {
+        document.getElementById('result').value += value;
+    }
+}
+
+function calculate() {
+    var result = document.getElementById('result').value;
+
+    result = result.replace(/\^/g, '**');
+    result = result.replace(/sin\(/g, 'Math.sin(');
+    result = result.replace(/cos\(/g, 'Math.cos(');
+    result = result.replace(/tan\(/g, 'Math.tan(');
+    result = result.replace(/inv\(/g, '1/(');
+    result = result.replace(/π/g, 'Math.PI');
+    result = result.replace(/e/g, 'Math.E');
+
+    result = result.replace(/(Math\.E|Math\.PI)(\d+|[-+*/^])/g, function (match, p1, p2) {
+        return p1 + ' * ' + p2;
+    });
+
+    result = result.replace(/√(\d+)/g, 'Math.sqrt($1)');
+
+try {
+    var evaluatedResult = Function('"use strict";return (' + result + ')')();
+
+    if (evaluatedResult !== evaluatedResult) {
+        document.getElementById('result').value = 'Error';
+        resultIsDisplayed = false;
+    } else {
+        document.getElementById('result').value = evaluatedResult;
+        resultIsDisplayed = true;
+    }
+} catch (error) {
+    clearResult()
+}
+}
+
+function clearResult() {
+    document.getElementById('result').value = '';
+    lastClickedIsOperator = false;
+}
+
+function backspace() {
+    var result = document.getElementById('result').value;
+
+    if (result.endsWith('π') || result.endsWith('√') || result.endsWith('e') || result.endsWith('r')) {
+        clearResult();
+    } else {
+        var regex = /π\^|e\^|\w+\($/;
+        var match = result.match(regex);
+
+        if (match) {
+            result = result.slice(0, -match[0].length);
+        } else {
+            result = result.slice(0, -1);
+        }
+
+        document.getElementById('result').value = result;
+        lastClickedIsOperator = false;
+    }
+}
+
+function calculatePercentage() {
+    var result = document.getElementById('result').value;
+    var percentage = eval(result) / 100;
+    document.getElementById('result').value = percentage;
+}
+
+var lastClickedIsOperator = false;
+var resultIsDisplayed = false;
+
+const themeButton = document.querySelector('.themeButton');
+const body = document.querySelector('body');
+
+themeButton.addEventListener('click', function() {
+    body.classList.toggle('darkTheme');
+
+    if (body.classList.contains('darkTheme')) {
+        body.style.setProperty('--background-light', '#111111');
+        body.style.setProperty('--background-light-bg', '#131313');
+        body.style.setProperty('--text-light', '#626262');
+        body.style.setProperty('--background-dark', '#fff');
+        body.style.setProperty('--background-dark-bg', '#f7ffff');
+        body.style.setProperty('--text-dark', '#2e2e2e');
+    } else {
+        body.style.setProperty('--background-light', '#fff');
+        body.style.setProperty('--background-light-bg', '#f7ffff');
+        body.style.setProperty('--text-light', '#2e2e2e');
+        body.style.setProperty('--background-dark', '#111111');
+        body.style.setProperty('--background-dark-bg', '#131313');
+        body.style.setProperty('--text-dark', '#626262');
+    }
+});
+
+  const CircleA = document.querySelector(".CircleA");
+  const rays = document.querySelector(".rays");
+
+  themeButton.addEventListener('click', function() {
+    theme();
+  });
+
+  function theme(){
+      CircleA.classList.toggle('active');
+      rays.classList.toggle('active');
+  }
+  
+  const buttons = document.querySelectorAll('.buttons');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      scroll();
+      const parent = button.closest('.parentButton');
+      if (parent) {
+        parent.classList.remove('active');
+        parent.classList.add('active');
+        setTimeout(function() {
+          parent.classList.remove('active');
+        }, 250);
+      }
+    });
+  });
+  
+</script>
+</body>
+</html>
